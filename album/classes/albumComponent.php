@@ -55,7 +55,6 @@ class albumComponent extends classes\Component\Component{
 
         //carrega os dados do album
         $cod_album = $album['cod_album'];
-        $capa      = $album['foto_capa'];
         $images = $this->galbum->getFotos($cod_album);
 
         //trata o caso do album vazio
@@ -64,18 +63,10 @@ class albumComponent extends classes\Component\Component{
             if(!$show_empty_album) return false;
             $url          = $this->Html->getUrlImage('semfoto/sem_foto.jpg');
             $url_imagens  = str_replace('sem_foto.jpg', "", $url);
-            $capa = "";
             $images[] = array(
                 'ext' => "jpg",
                 'url' => "sem_foto"
             );
-        }
-        
-        //recupera a capa do album
-        if($capa == "") $capa = $images[0];
-        else foreach($images as $img) if($img['cod_foto'] == $capa){
-            $capa = $img;
-            break;
         }
 
         //imprime o album
@@ -150,5 +141,3 @@ class albumComponent extends classes\Component\Component{
     }
     
 }
-
-?>

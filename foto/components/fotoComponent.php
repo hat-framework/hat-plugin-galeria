@@ -6,8 +6,9 @@ class fotoComponent extends classes\Component\Component{
     private $enablegurl;
     private $flush = "";
     public function __construct() {
-        $this->url_actions = URL_RESOURCES . "upload/lib/actions";
-        $this->url_images  = URL_RESOURCES . "upload/lib/images";
+        $res               = classes\Classes\Registered::getResourceLocationUrl('upload');
+        $this->url_actions = $res . "/src/lib/actions";
+        $this->url_images  = $res . "/src/lib/images";
     }
     
     public function DrawAlbum($fotos, $cod_album, $print = true){
@@ -27,41 +28,41 @@ class fotoComponent extends classes\Component\Component{
     }
 
     
-    public function DrawPicture($foto, $print, $capa = ""){
-        $url = $this->getUrl($foto, "min");
-        $id  = $foto['cod_foto'];
-        if($id == $capa) $class = "is_capa";
-        else             $class = "";
-        $var = "
-        <div class='img_container $class'>
-            <a href='$this->url_actions/capa.php?id=$id' id='foto_$id' class='img album_capa'>
-                <img src='$url' class='img_uploaded'/>
-            </a>
-            <a href='$this->url_actions/excluir.php?id=$id' id='foto_$id' class='img album_excluir' alt='excluir'>
-                <img src='$this->url_images/excluir.gif'/>
-            </a>";
-            
-            //pog das feias.. mas fazer o que ne?
-            if($this->enablegurl){
-                $url = "javascript:UploadifyDialog.insert(\"$this->url_actions/geturl.php?id=$id\",\"".URL_IMAGENS."\")";
-                $var .= "<a href='$url' id='foto_$id' class='img album_geturl'>
-                    <img src='$this->url_images/ok.png'/>
-                </a>";
+            public function DrawPicture($foto, $print, $capa = ""){
+                $url   = $this->getUrl($foto, "medium");
+                $url2  = $this->getUrl($foto, "");
+                $id    = $foto['cod_foto'];
+                $class = ($id == $capa)?"is_capa":"";
+                $album = isset($foto['cod_album'])?"data-lightbox='{$foto['cod_album']}'":"";
+                $var   = "
+                <div class='img_container $class col-xs-6 col-sm-4 col-md-3 col-lg-2'>
+                    <a href='$url2' target='_BLANK' id='foto_$id' class='img album_capa col-xs-12' $album>
+                        <img src='$url' class='img_uploaded'/>
+                    </a>
+                    <div>
+                        <a href='$this->url_actions/excluir.php?id=$id' id='foto_$id' class='img album_excluir' alt='excluir'>
+                            <i class='fa fa-2x fa-times'></i>
+                        </a>
+                        <a href='$url2' id='foto_$id' class='img' alt='download' target='_BLANK'>
+                            <i class='fa fa-2x fa-cloud-download'></i>
+                        </a>
+                    </div>
+                </div>";
+                if($print) {echo $var;}
+                else {$this->flush .= $var; return $var;}
             }
-        $var .= "</div>";
-        if($print) echo $var;
-        else $this->flush .= $var;
-    }
+            
+                    public function getUrl($foto, $sufix = "min"){
+                        if(!in_array($sufix, array('min', 'max', 'medium', ''))) {$sufix = 'min';}
+                        $sufix = ($sufix != "")? "_$sufix": $sufix;
+                        $url = URL_IMAGENS . $foto['url'] . "$sufix." . $foto['ext'];
+                        getTrueUrl($url);
+                        return $url;
+                    }
     
     public function enableGetUrl(){
         $this->enablegurl = true;
     }
     
-    public function getUrl($foto, $sufix = "min"){
-        if(!in_array($sufix, array('min', 'max', 'medium', ''))) $sufix = 'min';
-        $sufix = ($sufix != "")? "_$sufix": $sufix;
-        return URL_IMAGENS . $foto['url'] . "$sufix." . $foto['ext'];
-    }
+    
 }
-
-?>
