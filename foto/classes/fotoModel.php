@@ -52,4 +52,13 @@ class galeria_fotoModel extends \classes\Model\Model{
         return parent::inserir($dados);
     }
     
+    public function getUserPhotos($cod_usuario = ""){
+        if($cod_usuario == ""){$cod_usuario = usuario_loginModel::CodUsuario();}
+        $user = $this->antinjection($cod_usuario);
+        if($user == ""){$user = usuario_loginModel::CodUsuario();}
+        
+        $this->join('galeria/album', array('cod_album'), array('cod_album'));
+        return $this->selecionar(array("$this->tabela.*"), "cod_autor='$user'");
+    }
+    
 }

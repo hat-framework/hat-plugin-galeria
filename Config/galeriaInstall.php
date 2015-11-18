@@ -10,6 +10,13 @@ class galeriaInstall extends classes\Classes\InstallPlugin{
         'system'    => 'n',
     );
     
+    protected $import = array(
+        'usuario/gadget' => array(
+            array('cod'=>'user_gallery', 'titulo'=>'Fotos', 'comp_method'=>'showUserPhotos', 'model'=>'galeria/foto/foto')
+        )
+    );
+
+
     public function install(){
         return true;
     }

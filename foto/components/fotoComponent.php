@@ -87,4 +87,12 @@ class fotoComponent extends classes\Component\Component{
         $this->enablegurl = true;
     }
     
+    public function showUserPhotos($cod_usuario){
+        $fotos = $this->LoadModel('galeria/foto', 'gft')->getUserPhotos($cod_usuario);
+        if(empty($fotos)){return;}
+        foreach($fotos as $foto){
+            $this->DrawPicture($foto, true, '');
+        }
+    }
+    
 }
