@@ -46,6 +46,13 @@ class galeria_albumData extends \classes\Model\DataModel{
             'especial' => 'hide',
        	 ), 
         
+        'extramimes' => array(
+            'name'        => 'Extensões permitidas',
+            'description' => "coloque o mime type dos arquivos que podem ser enviados para este álbum, separados por vírgula",
+            'type'        => 'varchar',
+            'size'        => '512',
+       	 ), 
+        
         'ordem' => array(
             'name'  => 'Ordem',
             'type'  => 'int',
