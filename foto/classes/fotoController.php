@@ -30,7 +30,7 @@ class fotoController extends \classes\Controller\Controller{
             $files[] = str_replace(".{$foto['ext']}.{$foto['ext']}", ".{$foto['ext']}", $u);
         }
         $zipname = DIR_FILES. "/downloads/fotos_user_$cod_usuario";
-        $this->LoadResource('files/zip', 'zip')->donwloadZipFiles($zipname, $files, true, false);
+        $this->LoadResource('files/zip', 'zip')->donwloadZipFiles($zipname, $files, true, true);
         print_rh($this->zip->getMessages());
     }
     
