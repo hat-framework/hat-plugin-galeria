@@ -1,0 +1,8 @@
+<?php
+
+$this->LoadComponent('galeria/foto/foto', 'ft');
+foreach($fotos as $ft){
+    $url = $this->ft->getUrl($ft, "");
+    echoBr($url);
+    echo "<iframe width='1' height='1' frameborder='0' src='$url'></iframe>";
+}

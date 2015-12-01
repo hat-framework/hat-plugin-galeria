@@ -64,7 +64,8 @@ class fotoComponent extends classes\Component\Component{
                         else{
                             $this->nonImage = false;
                             $sufix = ($sufix != "")? "_$sufix": $sufix;
-                            $url = URL_IMAGENS . $foto['url'] . "$sufix." . $foto['ext'];
+                            $u     = URL_IMAGENS . $foto['url'] . "$sufix." . $foto['ext'];
+                            $url   = str_replace(".{$foto['ext']}.{$foto['ext']}", ".{$foto['ext']}", $u);
                         }
                         
                         getTrueUrl($url);
@@ -90,6 +91,8 @@ class fotoComponent extends classes\Component\Component{
     public function showUserPhotos($cod_usuario){
         $fotos = $this->LoadModel('galeria/foto', 'gft')->getUserPhotos($cod_usuario);
         if(empty($fotos)){return;}
+        $url = $this->LoadResource('html', 'html')->getLink("galeria/foto/all/$cod_usuario");
+        echo "<a href='$url' class='btn btn-danger' target='_BLANK'>Baixar Todas</a> <hr/>";
         foreach($fotos as $foto){
             $this->DrawPicture($foto, true, '');
         }
